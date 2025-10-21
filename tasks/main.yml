@@ -23,6 +23,9 @@
       {% checkmk_container_env.append('MAIL_RELAY_HOST=' + checkmk_mail_relay_host) %}
       {{ checkmk_container_env }}
 
+- debug:
+    var: checkmk_container_env
+
 - name: Ensure config directories
   become: true
   ansible.builtin.file:
