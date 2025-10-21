@@ -20,8 +20,10 @@
       {%- if checkmk_mail_relay_host != '' -%}
       {{- container_env.append({ 'MAIL_RELAY_HOST': checkmk_mail_relay_host }) -}}
       {%- endif -%}
-      {%- for key, value in container_env.items() -%}
+      {%- for env_iem in container_env -%}
+      {%- for key, value in env_item.items() -%}
       {{- container_env_list.append(key + '=' + value) -}}
+      {%- endfor -%}
       {%- endfor -%}
       {{- container_env_list -}}
 
