@@ -10,4 +10,4 @@ checkmk_container_network_config:
 checkmk_host_port_web: 5000
 checkmk_host_port_agent: 8000
 checkmk_host_port_livestatus: 6557
-checkmk_host_livestatus_status: "off"
+checkmk_host_livestatus: "off"
