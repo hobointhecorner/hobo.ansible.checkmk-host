@@ -13,7 +13,7 @@
   ansible.builtin.set_fact:
     checkmk_container_env: >-
       {%- set container_env=checkmk_container_base_env -%}
-      {%- set container_env_list = [] -%}
+      {%- set container_env_list=[] -%}
       {%- if checkmk_password_set | bool -%}
       {{- container_env.append({ 'CMK_PASSWORD': checkmk_password }) -}}
       {%- endif -%}
