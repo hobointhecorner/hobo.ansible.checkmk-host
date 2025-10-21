@@ -4,22 +4,22 @@
     checkmk_app_config_dir: "{{ checkmk_service_config_dir }}/checkmk"
     checkmk_service_user: checkmk
     checkmk_service_group: checkmk
-    checkmk_container_env:
-      - TZ={{ checkmk_timezone }}
-      - CMK_SITE_ID={{ checkmk_site_id }}
-      - CMK_LIVESTATUS_TCP={{ checkmk_host_livestatus }}
+    checkmk_container_base_env:
+      - TZ: "{{ checkmk_timezone }}"
+      - CMK_SITE_ID: "{{ checkmk_site_id }}"
+      - CMK_LIVESTATUS_TCP: "{{ checkmk_host_livestatus }}"
 
-- name: Set initial password
-  when: checkmk_password_set | bool
+- name: Synthesize container env var list
   ansible.builtin.set_fact:
     checkmk_container_env: >-
-      {% checkmk_container_env.append('CMK_PASSWORD=' + checkmk_password) %}{{ checkmk_container_env }}
-
-- name: Enable mail relay
-  when: checkmk_mail_relay_host != ''
-  ansible.builtin.set_fact:
-    checkmk_container_env: >-
-      {% checkmk_container_env.append('MAIL_RELAY_HOST=' + checkmk_mail_relay_host) %}{{ checkmk_container_env }}
+      {%- set container_env=checkmk_container_base_env -%}
+      {%- if checkmk_password_set | bool -%}
+      {{ container_env.append({ 'CMK_PASSWORD': checkmk_password }) }}
+      {%- endif -%}
+      {%- if checkmk_mail_relay_host != '' -%}
+      {{ container_env.append({ 'MAIL_RELAY_HOST': checkmk_mail_relay_host }) }}
+      {%- endif -%}
+      {{ container_env }}
 
 - debug:
     var: checkmk_container_env
