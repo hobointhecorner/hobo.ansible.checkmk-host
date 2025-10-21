@@ -5,21 +5,25 @@
     checkmk_service_user: checkmk
     checkmk_service_group: checkmk
     checkmk_container_base_env:
-      - TZ: "{{ checkmk_timezone }}"
-      - CMK_SITE_ID: "{{ checkmk_site_id }}"
-      - CMK_LIVESTATUS_TCP: "{{ checkmk_host_livestatus }}"
+      TZ: "{{ checkmk_timezone }}"
+      CMK_SITE_ID: "{{ checkmk_site_id }}"
+      CMK_LIVESTATUS_TCP: "{{ checkmk_host_livestatus }}"
 
 - name: Synthesize container env var list
   ansible.builtin.set_fact:
     checkmk_container_env: >-
       {%- set container_env=checkmk_container_base_env -%}
+      {%- set container_env_list = [] -%}
       {%- if checkmk_password_set | bool -%}
-      {{ container_env.append({ 'CMK_PASSWORD': checkmk_password }) }}
+      {{- container_env.append({ 'CMK_PASSWORD': checkmk_password }) -}}
       {%- endif -%}
       {%- if checkmk_mail_relay_host != '' -%}
-      {{ container_env.append({ 'MAIL_RELAY_HOST': checkmk_mail_relay_host }) }}
+      {{- container_env.append({ 'MAIL_RELAY_HOST': checkmk_mail_relay_host }) -}}
       {%- endif -%}
-      {{ container_env }}
+      {%- for key, value in container_env.items() -%}
+      {{- container_env_list.append(key + '=' + value) -}}
+      {%- endfor -%}
+      {{- container_env_list -}}
 
 - debug:
     var: checkmk_container_env
