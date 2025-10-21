@@ -5,9 +5,9 @@
     checkmk_service_user: checkmk
     checkmk_service_group: checkmk
     checkmk_container_base_env:
-      TZ: "{{ checkmk_timezone }}"
-      CMK_SITE_ID: "{{ checkmk_site_id }}"
-      CMK_LIVESTATUS_TCP: "{{ checkmk_host_livestatus }}"
+      - TZ: "{{ checkmk_timezone }}"
+      - CMK_SITE_ID: "{{ checkmk_site_id }}"
+      - CMK_LIVESTATUS_TCP: "{{ checkmk_host_livestatus }}"
 
 - name: Synthesize container env var list
   ansible.builtin.set_fact:
