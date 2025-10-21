@@ -13,15 +13,13 @@
   when: checkmk_password_set | bool
   ansible.builtin.set_fact:
     checkmk_container_env: >-
-      {% checkmk_container_env.append('CMK_PASSWORD=' + checkmk_password) %}
-      {{ checkmk_container_env }}
+      {% checkmk_container_env.append('CMK_PASSWORD=' + checkmk_password) %}{{ checkmk_container_env }}
 
 - name: Enable mail relay
   when: checkmk_mail_relay_host != ''
   ansible.builtin.set_fact:
     checkmk_container_env: >-
-      {% checkmk_container_env.append('MAIL_RELAY_HOST=' + checkmk_mail_relay_host) %}
-      {{ checkmk_container_env }}
+      {% checkmk_container_env.append('MAIL_RELAY_HOST=' + checkmk_mail_relay_host) %}{{ checkmk_container_env }}
 
 - debug:
     var: checkmk_container_env
