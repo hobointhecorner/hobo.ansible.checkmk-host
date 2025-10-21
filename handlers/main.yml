@@ -1,0 +1,10 @@
+---
+- name: Reload checkmk service
+  become: true
+  tags:
+    - always
+  systemd:
+    name: checkmk-host.service
+    enabled: true
+    daemon_reload: true
+    state: restarted

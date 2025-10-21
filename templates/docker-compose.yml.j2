@@ -1,0 +1,15 @@
+services:
+  checkmk:
+    image: "checkmk/check-mk-raw:{{ checkmk_version | mandatory(true) }}-latest"
+    container_name: "checkmk"
+    environment: {{ checkmk_container_env | to_json }}
+    volumes:
+      - {{ checkmk_app_config_dir }}:/omd/sites
+    tmpfs:
+      - /opt/omd/sites/cmk/tmp:uid=1000,gid=1000
+    networks: {{ checkmk_container_network_config }}
+    ports:
+      - {{ checkmk_host_port_web }}:5000
+      - {{ checkmk_host_port_agent }}:8000
+      - {{ checkmk_host_port_livestatus }}:6557
+    restart: always

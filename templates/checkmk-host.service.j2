@@ -1,0 +1,17 @@
+[Unit]
+Description=Checkmk monitoring host
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+User={{ checkmk_service_user }}
+Group={{ checkmk_service_group }}
+WorkingDirectory={{ checkmk_service_config_dir }}
+ExecStart=/usr/bin/docker compose up -d --remove-orphans --pull always
+ExecReload=/usr/bin/docker compose up -d --remove-orphans
+ExecStop=/usr/bin/docker compose down
+
+[Install]
+WantedBy=multi-user.target

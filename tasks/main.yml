@@ -1,0 +1,63 @@
+---
+- name: Set basic facts
+  ansible.builtin.set_fact:
+    checkmk_app_config_dir: "{{ checkmk_service_config_dir }}/checkmk"
+    checkmk_service_user: checkmk
+    checkmk_service_group: checkmk
+    checkmk_container_env:
+      - TZ={{ checkmk_timezone }}
+      - CMK_SITE_ID={{ checkmk_site_id }}
+      - CMK_LIVESTATUS_TCP={{ checkmk_host_livestatus }}
+
+- name: Set initial password
+  when: checkmk_password_set | bool
+  ansible.builtin.set_fact:
+    checkmk_container_env: >-
+      {% checkmk_container_env.append('CMK_PASSWORD=' + checkmk_password) %}
+      {{ checkmk_container_env }}
+
+- name: Enable mail relay
+  when: checkmk_mail_relay_host != ''
+  ansible.builtin.set_fact:
+    checkmk_container_env: >-
+      {% checkmk_container_env.append('MAIL_RELAY_HOST=' + checkmk_mail_relay_host) %}
+      {{ checkmk_container_env }}
+
+- name: Ensure config directories
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ checkmk_service_user }}"
+    group: "{{ checkmk_service_group }}"
+    mode: "2751"
+    state: directory
+  loop:
+      - "{{ checkmk_service_config_dir }}"
+      - "{{ checkmk_app_config_dir }}"
+
+- name: Template docker compose file
+  become: true
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ checkmk_service_config_dir }}/docker-compose.yml"
+    owner: "{{ checkmk_service_user }}"
+    group: "{{ checkmk_service_group }}"
+  notify: Reload checkmk service
+
+- name: Template systemd service file
+  become: true
+  ansible.builtin.template:
+    src: checkmk-host.service.j2
+    dest: "/etc/systemd/system/checkmk-host.service"
+    owner: root
+    group: root
+    mode: "640"
+  notify: Reload checkmk service
+
+- name: Password change warning
+  when: checkmk_password_set | bool
+  ignore_errors: true
+  ansible.builtin.fail:
+    msg: Make sure to update your password from the management console.  Subsequent runs of this playbook should set checkmk_password_set=false (default behavior).
+
+- meta: flush_handlers

@@ -1,0 +1,21 @@
+---
+allow_duplicates: true
+
+galaxy_info:
+  role_name: hobo.ansible.checkmk-host
+  author: hobointhecorner
+  description: Configure a SWAG proxy module file
+  license: MPL-2.0
+
+  galaxy_tags: []
+
+dependencies:
+  - src: git+git@github.com:hobointhecorner/hobo.ansible.service_user.git
+    version: v1
+    name: hobo.service_user
+    service_user_name: checkmk
+
+  - src: git+git@github.com:hobointhecorner/Hobo.Ansible.Docker.git
+    version: v2
+    name: hobo.docker
+    docker_additional_group_members: ["checkmk"]
