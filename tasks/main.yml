@@ -15,7 +15,7 @@
       {%- set container_env=checkmk_container_base_env | combine(checkmk_container_custom_env_vars) -%}
       {%- set container_env_list=[] -%}
       {%- if checkmk_password_set | bool -%}
-      {{- set container_env={'CMK_PASSWORD': checkmk_password} | combine(container_env) -}}
+      {{- set container_env=container_env | combine({'CMK_PASSWORD': checkmk_password}) -}}
       {%- endif -%}
       {%- for item in (container_env | dict2items) -%}
       {{- container_env_list.append(item.key + '=' + item.value) -}}
