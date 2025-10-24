@@ -4,7 +4,7 @@ allow_duplicates: true
 galaxy_info:
   role_name: hobo.ansible.checkmk-host
   author: hobointhecorner
-  description: Configure a SWAG proxy module file
+  description: Configure a checkmk host using systemd and docker compose
   license: MPL-2.0
 
   galaxy_tags: []

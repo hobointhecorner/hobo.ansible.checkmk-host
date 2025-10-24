@@ -3,7 +3,7 @@
   become: true
   tags:
     - always
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ checkmk_container_name }}.service"
     enabled: true
     daemon_reload: true
