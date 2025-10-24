@@ -5,6 +5,7 @@ checkmk_timezone: Etc/Utc
 checkmk_password: ChangeMeImmediately
 checkmk_password_set: false
 checkmk_service_config_dir: /srv/checkmk-host
+checkmk_container_custom_env_vars: {}
 checkmk_container_network_config:
   default: {}
 checkmk_host_port_web: 5000
