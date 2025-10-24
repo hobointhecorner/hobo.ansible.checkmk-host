@@ -17,6 +17,9 @@
       {%- if checkmk_password_set | bool -%}
       {%- set container_env={'CMK_PASSWORD': checkmk_password} | combine(container_env) -%}
       {%- endif -%}
+      {%- if checkmk_mail_relay_host != '' -%}
+      {%- set container_env={'MAIL_RELAY_HOST': checkmk_mail_relay_host} | combine(container_env) -%}
+      {%- endif -%}
       {%- for item in (container_env | dict2items) -%}
       {{- container_env_list.append(item.key + '=' + item.value) -}}
       {%- endfor -%}
