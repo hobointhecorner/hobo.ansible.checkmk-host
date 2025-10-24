@@ -22,6 +22,8 @@
 - debug:
     var: checkmk_container_env
 
+- pause:
+
 - name: Ensure config directories
   become: true
   ansible.builtin.file:
