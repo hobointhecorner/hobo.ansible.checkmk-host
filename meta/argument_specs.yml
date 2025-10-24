@@ -1,0 +1,82 @@
+---
+argument_specs:
+  main:
+    options:
+      #
+      # REQUIRED
+      #
+
+      checkmk_version:
+        type: str
+        required: true
+        description: TODO
+
+      #
+      # OPTIONAL
+      #
+
+      checkmk_password:
+        type: str
+        description: TODO
+
+      checkmk_site_id:
+        type: str
+        default: cmk
+        description: TODO
+
+      checkmk_timezone:
+        type: str
+        default: Etc/Utc
+        description: TODO
+
+      checkmk_password_set:
+        type: bool
+        default: false
+        description: TODO
+
+      checkmk_service_config_dir:
+        type: str
+        default: /srv/checkmk-host
+        description: TODO
+
+      checkmk_container_name:
+        type: str
+        default: checkmk-host
+        description: TODO
+
+      checkmk_container_custom_env_vars:
+        type: dict
+        default: {}
+        description: TODO
+
+      checkmk_container_network_config:
+        type: dict
+        default: { 'default': {} }
+        description: TODO
+
+      checkmk_host_port_web:
+        type: str
+        default: 5000
+        description: TODO
+
+      checkmk_host_port_agent:
+        type: str
+        default: 8000
+        description: TODO
+
+      checkmk_host_port_livestatus:
+        type: str
+        default: 6557
+        description: TODO
+
+      checkmk_host_livestatus:
+        type: str
+        default: off
+        description: TODO
+        choices:
+          - 'off'
+          - 'on'
+
+      checkmk_mail_relay_host:
+        type: str
+        description: TODO

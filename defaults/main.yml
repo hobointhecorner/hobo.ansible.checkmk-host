@@ -1,4 +1,5 @@
 ---
+checkmk_password:
 checkmk_site_id: cmk
 checkmk_timezone: Etc/Utc
 checkmk_password_set: false
