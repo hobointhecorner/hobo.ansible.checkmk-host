@@ -14,8 +14,4 @@ dependencies:
     version: v1
     name: hobo.service_user
     service_user_name: checkmk
-
-  - src: git+git@github.com:hobointhecorner/Hobo.Ansible.Docker.git
-    version: v2
-    name: hobo.docker
-    docker_additional_group_members: ["checkmk"]
+    service_user_additional_groups: ["docker"]
