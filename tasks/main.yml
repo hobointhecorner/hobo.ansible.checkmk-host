@@ -14,12 +14,6 @@
     checkmk_container_env: >-
       {%- set container_env=combine(checkmk_container_base_env, checkmk_container_custom_env_vars) -%}
       {%- set container_env_list=[] -%}
-      {%- if checkmk_password_set | bool -%}
-      {{- set container_env=combine({'CMK_PASSWORD': checkmk_password}, container_env) -}}
-      {%- endif -%}
-      {%- if checkmk_mail_relay_host != '' -%}
-      {{- set container_env=combine({'MAIL_RELAY_HOST': checkmk_mail_relay_host}, container_env) -}}
-      {%- endif -%}
       {%- for item in (container_env | dict2items) -%}
       {{- container_env_list.append(item.key + '=' + item.value) -}}
       {%- endfor -%}
