@@ -57,11 +57,10 @@
     mode: "640"
   notify: Reload checkmk service
 
-- name: Password change warning
-  when: checkmk_password_set | bool
-  ignore_errors: true
-  ansible.builtin.fail:
-    msg: Make sure to update your password from the management console then run this playbook again, omitting checkmk_password_set=true.
-
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
+
+- name: Password change warning
+  when: checkmk_password_set | bool
+  ansible.builtin.fail:
+    msg: Make sure to update your password from the management console then run this playbook again, omitting checkmk_password_set=true.
