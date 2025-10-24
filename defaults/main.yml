@@ -1,8 +1,6 @@
 ---
 checkmk_site_id: cmk
-checkmk_version: '2.4.0'
 checkmk_timezone: Etc/Utc
-checkmk_password: ChangeMeImmediately
 checkmk_password_set: false
 checkmk_service_config_dir: /srv/checkmk-host
 checkmk_container_name: checkmk-host
@@ -13,3 +11,4 @@ checkmk_host_port_web: 5000
 checkmk_host_port_agent: 8000
 checkmk_host_port_livestatus: 6557
 checkmk_host_livestatus: "off"
+checkmk_mail_relay_host: ''
