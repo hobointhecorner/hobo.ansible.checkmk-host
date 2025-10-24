@@ -60,6 +60,6 @@
   when: checkmk_password_set | bool
   ignore_errors: true
   ansible.builtin.fail:
-    msg: Make sure to update your password from the management console.  Subsequent runs of this playbook should set checkmk_password_set=false (default behavior).
+    msg: Make sure to update your password from the management console then run this playbook again, omitting checkmk_password_set=true.
 
 - meta: flush_handlers
