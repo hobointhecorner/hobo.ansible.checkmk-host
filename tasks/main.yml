@@ -50,7 +50,7 @@
   become: true
   ansible.builtin.template:
     src: checkmk-host.service.j2
-    dest: "/etc/systemd/system/checkmk-host.service"
+    dest: "/etc/systemd/system/{{ checkmk_container_name }}.service"
     owner: root
     group: root
     mode: "640"

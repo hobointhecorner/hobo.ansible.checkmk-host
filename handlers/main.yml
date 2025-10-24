@@ -4,7 +4,7 @@
   tags:
     - always
   systemd:
-    name: checkmk-host.service
+    name: "{{ checkmk_container_name }}.service"
     enabled: true
     daemon_reload: true
     state: restarted
