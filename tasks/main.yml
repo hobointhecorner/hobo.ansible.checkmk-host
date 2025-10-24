@@ -23,7 +23,7 @@
       {%- for item in (container_env | dict2items) -%}
       {{- container_env_list.append(item.key + '=' + item.value) -}}
       {%- endfor -%}
-      {{ container_env_list }}
+      {{ container_env_list | sort }}
 
 - debug:
     var: checkmk_container_env
