@@ -12,7 +12,7 @@
 - name: Synthesize container env var list
   ansible.builtin.set_fact:
     checkmk_container_env: >-
-      {%- set container_env=combine(checkmk_container_base_env, checkmk_container_custom_env_vars) -%}
+      {%- set container_env=checkmk_container_base_env | combine(checkmk_container_custom_env_vars) -%}
       {%- set container_env_list=[] -%}
       {%- for item in (container_env | dict2items) -%}
       {{- container_env_list.append(item.key + '=' + item.value) -}}
