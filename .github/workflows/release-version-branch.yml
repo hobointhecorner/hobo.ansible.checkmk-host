@@ -42,7 +42,7 @@ jobs:
         run: |
           export current_version="$(convco version --print-prefix)"
           export new_version="$(convco version --bump --print-prefix)"
-          [ "$current_version" != "$new_version" ] && export make_release=true || export make_release=false
+          [ "$current_version" != "$new_version" ] && export make_release='true' || export make_release='false'
 
           echo "Current version: $current_version"
           echo "New Version: $new_version"
@@ -54,10 +54,19 @@ jobs:
           echo "make_release='$make_release'" >> $GITHUB_OUTPUT
 
       - name: pre-debug
-        run:
+        env:
+          current_version: ${{ steps.output-info.outputs.current_version }}
+          new_version: ${{ steps.output-info.outputs.new_version }}
+          make_release: ${{ steps.output-info.outputs.make_release }}
+          changelog_path: ${{ steps.output-info.outputs.changelog_path }}
+        run: |
+          echo "Current version: $current_version"
+          echo "New Version: $new_version"
+          echo "Changelog: $changelog_path"
+          echo "Make release: $make_release"
 
       - name: debug
-      # if: ${{ steps.output-info.outputs.make_release == 'true' }}
+        if: ${{ steps.output-info.outputs.make_release }}
         env:
           current_version: ${{ steps.output-info.outputs.current_version }}
           new_version: ${{ steps.output-info.outputs.new_version }}
