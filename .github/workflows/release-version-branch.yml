@@ -32,6 +32,7 @@ jobs:
           sudo dpkg -i convco*.deb
 
       - name: Get version info
+        id: convco
         run: |
           export convco_current_version="$(convco version)"
           export convco_version="$(convco version --bump)"
@@ -51,7 +52,7 @@ jobs:
         uses: laputansoft/github-tag-action@v4.6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.convco.outputs.version }}
+          tag: ${{ steps.convco.outputs.version }}
           release_branches: main
 
       - name: Release
@@ -59,6 +60,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{needs.convco.outputs.version}}
-          release_name: ${{needs.convco.outputs.version}}
-          body: ${{needs.convco.outputs.changelog}}
+          tag_name: ${{steps.convco.outputs.version}}
+          release_name: ${{steps.convco.outputs.version}}
+          body: ${{steps.convco.outputs.changelog}}
