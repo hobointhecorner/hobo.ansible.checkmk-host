@@ -5,9 +5,14 @@ checkmk_timezone: Etc/Utc
 checkmk_password_set: false
 checkmk_service_config_dir: /srv/checkmk-host
 checkmk_container_name: checkmk-host
-checkmk_container_custom_env_vars: {}
-checkmk_container_network_config:
+checkmk_container_compose_volumes: {}
+checkmk_container_additional_volumes: []
+checkmk_container_compose_networks: {}
+checkmk_container_networks:
   default: {}
+checkmk_container_additional_env_vars: {}
+checkmk_container_compose_overrides: {}
+checkmk_container_compose_override_list_behavior: replace
 checkmk_host_port_web: 5000
 checkmk_host_port_agent: 8000
 checkmk_host_port_livestatus: 6557
