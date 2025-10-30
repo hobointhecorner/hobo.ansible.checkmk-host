@@ -35,6 +35,7 @@ jobs:
         id: convco
         env:
           CONVCO_INITIAL_BUMP_VERSION: '1.0.0'
+          CONVCO_PREFIX: ''
         run: |
           git fetch --tags
 
