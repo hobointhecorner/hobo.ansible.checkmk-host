@@ -29,21 +29,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run convco
-        run: |
-          curl -OL https://github.com/convco/convco/releases/latest/download/convco-deb.zip
-          unzip convco-deb.zip
-          sudo dpkg -i convco*.deb
-
-          export convco_current_version="$(convco version)"
-          export convco_version="$(convco version --bump)"
-          export convco_changelog="$(convco changelog)"
-          echo "convco_version=$(convco version)" >> "$GITHUB_OUTPUT"
-          echo "convco_changelog=$(convco changelog)" >> "$GITHUB_OUTPUT"
-          echo "Current version: $convco_current_version"
-          echo "New Version: $convco_version"
-          echo: "Changelog: $convco_changelog"
-
   make-release:
     name: Make release
     runs-on: ubuntu-latest
@@ -52,7 +37,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create tag
+      - name: Install convco
+        run: |
+          curl -OL https://github.com/convco/convco/releases/latest/download/convco-deb.zip
+          unzip convco-deb.zip
+          sudo dpkg -i convco*.deb
+
+      - name: Get version info
+        run: |
+          export convco_current_version="$(convco version)"
+          export convco_version="$(convco version --bump)"
+          export convco_changelog="$(convco changelog)"
+
+          echo "convco_version=$(convco version)" >> "$GITHUB_OUTPUT"
+
+          echo 'onvco_changelog<<EOF' >> "$GITHUB_OUTPUT"
+          echo "convco_changelog=$(convco changelog)" >> "$GITHUB_OUTPUT"
+          echo 'EOF' >> "$GITHUB_OUTPUT"
+
+          echo "Current version: $convco_current_version"
+          echo "New Version: $convco_version"
+          echo -e "Changelog:\n${convco_changelog}"
+
+      - name: Tag
         uses: laputansoft/github-tag-action@v4.6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
