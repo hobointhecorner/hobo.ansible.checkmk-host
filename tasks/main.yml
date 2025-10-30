@@ -1,5 +1,5 @@
 ---
-- name: Set playbook facts
+- name: Configure playbook
   ansible.builtin.include_tasks: tasks/playbook-facts.yml
 
 - name: Ensure config directories

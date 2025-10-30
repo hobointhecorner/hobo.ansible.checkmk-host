@@ -65,6 +65,11 @@ argument_specs:
           default: {}
         description: TODO
 
+      checkmk_container_additional_ports:
+        type: list
+        default: []
+        description: TODO
+
       checkmk_container_additional_env_vars:
         type: dict
         default: {}
