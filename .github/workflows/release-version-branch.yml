@@ -34,9 +34,9 @@ jobs:
       - name: Get version info
         id: convco
         run: |
-          export convco_current_version="$(convco version)"
-          export convco_version="$(convco version --bump)"
-          export convco_changelog="$(convco changelog)"
+          export convco_current_version="$(convco version --prefix '')"
+          export convco_version="$(convco version --prefix '' --bump)"
+          export convco_changelog="$(convco changelog --prefix '')"
 
           echo "current_version=${convco_current_version}" >> $GITHUB_OUTPUT
           echo "version=${convco_version}" >> $GITHUB_OUTPUT
