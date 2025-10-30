@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
 
       - name: Convco init
-        uses: convco/convco-action@v0.1.0
+        uses: convco/convco-action@v0.2.0
 
       - name: convco version
         run: convco version
