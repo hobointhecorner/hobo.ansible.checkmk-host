@@ -49,12 +49,6 @@ jobs:
           echo "New Version: $convco_version"
           echo -e "Changelog:\n${convco_changelog}"
 
-      - name: debug
-        run: |
-          echo "Current version: ${{ steps.convco.outputs.current_version }}"
-          echo "New Version: ${{ steps.convco.outputs.version }}"
-          echo -e "Changelog:\n${{ steps.convco.outputs.changelog }}"
-
       - name: Tag
         uses: laputansoft/github-tag-action@v4.6
         with:
