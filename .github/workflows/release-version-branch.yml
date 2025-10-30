@@ -22,7 +22,7 @@ jobs:
     name: Get version info
     runs-on: ubuntu-latest
     container:
-      image: docker.io/convo/convco:0.6.2
+      image: convo/convco:0.6.2
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_TOKEN }}
