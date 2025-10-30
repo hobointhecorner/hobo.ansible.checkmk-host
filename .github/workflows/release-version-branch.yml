@@ -40,6 +40,8 @@ jobs:
           pwd
           ls -lah
 
+          git fetch --tags
+
           export convco_current_version="$(convco version)"
           export convco_version="$(convco version --bump)"
 
