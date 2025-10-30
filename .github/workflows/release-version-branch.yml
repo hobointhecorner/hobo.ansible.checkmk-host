@@ -2,28 +2,41 @@ name: Make release
 on:
   push:
    branches:
-    - v*
+    - main
 env:
+  base_branch: main
   upstream_branch: v1
 jobs:
+  reset:
+    name: Reset version branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reset upstream branch to main
+        uses: nicksnell/action-reset-repo@master
+        with:
+          base_branch: ${{ env.base_branch }}
+          reset_branch: ${{ env.upstream_branch }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
   convco:
     name: Get version info
     runs-on: ubuntu-latest
     container:
       image: convo/convco
     outputs:
+      current_version: ${{ steps.convco.outputs.convco_current_version }}
       version: ${{ steps.convco.outputs.convco_version }}
       changelog: ${{ steps.convco.outputs.convco_changelog }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
       - id: convco
         run: |
-          export convco_version="$(convco version)"
+          export convco_current_version="$(convco version)"
+          export convco_version="$(convco version --bump)"
           export convco_changelog="$(convco changelog)"
           echo "convco_version=$(convco version)" >> "$GITHUB_OUTPUT"
           echo "convco_changelog=$(convco changelog)" >> "$GITHUB_OUTPUT"
-          echo "Version: $convco_version"
+          echo "Current version: $convco_current_version"
+          echo "New Version: $convco_version"
           echo: "Changelog: $convco_changelog"
 
   make-release:
@@ -31,12 +44,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: convco
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Create tag
         uses: laputansoft/github-tag-action@v4.6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ needs.convco.outputs.version }}
-          release_branches: ${{ env.upstream_branch }}
+          release_branches: main
 
       - name: Release
         uses: comnoco/create-release-action@v2.0.5
