@@ -46,12 +46,12 @@ jobs:
           echo "current_version=${convco_current_version}" >> $GITHUB_OUTPUT
           echo "version=${convco_version}" >> $GITHUB_OUTPUT
 
-          convco changelog > $HOME/CHANGELOG.md
+          convco changelog > CHANGELOG.md
 
           echo "Current version: $convco_current_version"
           echo "New Version: $convco_version"
           echo "Changelog:"
-          cat $HOME/CHANGELOG.md
+          cat CHANGELOG.md
 
       - name: Tag
         uses: laputansoft/github-tag-action@v4.6
@@ -67,4 +67,4 @@ jobs:
         with:
           tag_name: v${{steps.convco.outputs.version}}
           release_name: ${{steps.convco.outputs.version}}
-          body_path: $HOME/CHANGELOG.md
+          body_path: CHANGELOG.md
