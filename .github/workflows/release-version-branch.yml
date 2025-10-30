@@ -35,10 +35,8 @@ jobs:
         id: convco
         env:
           CONVCO_INITIAL_BUMP_VERSION: '1.0.0'
+          CONVCO_PRINT_PREFIX: 'true'
         run: |
-          pwd
-          ls -lah
-
           git fetch --tags
 
           export convco_current_version="$(convco version)"
@@ -54,12 +52,15 @@ jobs:
           echo "Changelog:"
           cat CHANGELOG.md
 
-      - name: Tag
-        uses: laputansoft/github-tag-action@v4.6
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: v${{ steps.convco.outputs.version }}
-          release_branches: main
+          git tag "${convco_version}"
+          git push --tags
+
+      # - name: Tag
+      #   uses: laputansoft/github-tag-action@v4.6
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     tag: v${{ steps.convco.outputs.version }}
+      #     release_branches: main
 
       - name: Release
         uses: comnoco/create-release-action@v2.0.5
