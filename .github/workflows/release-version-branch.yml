@@ -53,6 +53,20 @@ jobs:
           echo "changelog_path='${changelog_path}'" >> $GITHUB_OUTPUT
           echo "make_release='$make_release'" >> $GITHUB_OUTPUT
 
+      - name: debug
+        if: ${{ steps.output-info.outputs.make_release == 'true' }}
+        env:
+          current_version: ${{ steps.output-info.outputs.current_version }}
+          new_version: ${{ steps.output-info.outputs.new_version }}
+          make_release: ${{ steps.output-info.outputs.make_release }}
+          changelog_path: ${{ steps.output-info.outputs.changelog_path }}
+        run: |
+          echo "Current version: $current_version"
+          echo "New Version: $new_version"
+          echo "Changelog: $changelog_path"
+          echo "Make release: $make_release"
+
+
   make-release:
     name: Make release
     runs-on: ubuntu-latest
