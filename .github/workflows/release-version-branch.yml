@@ -42,7 +42,7 @@ jobs:
         run: |
           export current_version="$(convco version --print-prefix)"
           export new_version="$(convco version --bump --print-prefix)"
-          [ "$convco_current_version" != "$convco_version" ] && export make_release='true' || export make_release='false'
+          [ "$convco_current_version" = "$convco_version" ] && export make_release='false' || export make_release='true'
 
           echo "Current version: $current_version"
           echo "New Version: $new_version"
@@ -50,8 +50,8 @@ jobs:
 
           echo "current_version='${current_version}'" >> $GITHUB_OUTPUT
           echo "new_version='${new_version}'" >> $GITHUB_OUTPUT
-          echo "changelog_path='${changelog_path}'"
-          echo "make_release='$make_release'"
+          echo "changelog_path='${changelog_path}'" >> $GITHUB_OUTPUT
+          echo "make_release='$make_release'" >> $GITHUB_OUTPUT
 
   make-release:
     name: Make release
