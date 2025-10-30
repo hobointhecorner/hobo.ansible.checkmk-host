@@ -33,6 +33,9 @@ jobs:
       - name: convco version
         run: convco version
 
+      - name: convco bump
+        run: convco version --bump
+
       # - name: Install convco
       #   run: |
       #     curl -OL https://github.com/convco/convco/releases/latest/download/convco-deb.zip
