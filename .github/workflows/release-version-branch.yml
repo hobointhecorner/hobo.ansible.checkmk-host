@@ -56,7 +56,7 @@ jobs:
         uses: laputansoft/github-tag-action@v4.6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.convco.outputs.version }}
+          tag: v${{ steps.convco.outputs.version }}
           release_branches: main
 
       - name: Release
