@@ -21,11 +21,6 @@ jobs:
   convco:
     name: Get version info
     runs-on: ubuntu-latest
-    container:
-      image: convo/convco:0.6.2
-      credentials:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_TOKEN }}
     outputs:
       current_version: ${{ steps.convco.outputs.convco_current_version }}
       version: ${{ steps.convco.outputs.convco_version }}
@@ -33,6 +28,10 @@ jobs:
     steps:
       - id: convco
         run: |
+          curl -OL https://github.com/convco/convco/releases/latest/download/convco-deb.zip
+          unzip convco-deb.zip
+          sudo dpkg -i convco*.deb
+
           export convco_current_version="$(convco version)"
           export convco_version="$(convco version --bump)"
           export convco_changelog="$(convco changelog)"
