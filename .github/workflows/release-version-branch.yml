@@ -42,7 +42,7 @@ jobs:
         run: |
           export current_version="$(convco version --print-prefix)"
           export new_version="$(convco version --bump --print-prefix)"
-          [ "$convco_current_version" = "$convco_version" ] && export make_release='false' || export make_release='true'
+          [ "$current_version" != "$new_version" ] && export make_release='true' || export make_release='false'
 
           echo "Current version: $current_version"
           echo "New Version: $new_version"
