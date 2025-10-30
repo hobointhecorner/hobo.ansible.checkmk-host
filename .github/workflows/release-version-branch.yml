@@ -9,19 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: convco_check
-        uses: convco/convco-action
+        uses: convco/convco-action@v0.2.0
         with:
           command: check
-          convco_version: latest
 
       - id: convco_version
-        uses: convco/convco-action
+        uses: convco/convco-action@v0.2.0
         with:
           command: version
-          convco_version: latest
 
       - id: convco_changelog
-        uses: convco/convco-action
+        uses: convco/convco-action@v0.2.0
         with:
           command: changelog
-          convco_version: latest
