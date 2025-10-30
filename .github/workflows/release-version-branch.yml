@@ -24,41 +24,49 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install convco
-        run: |
-          curl -OL https://github.com/convco/convco/releases/latest/download/convco-deb.zip
-          unzip convco-deb.zip
-          sudo dpkg -i convco*.deb
-
-      - name: Get version info
-        id: convco
-        run: |
-          git fetch --tags
-          git pull
-
-
-          export convco_current_version="$(convco version --print-prefix)"
-          export convco_version="$(convco version --bump --print-prefix)"
-
-          echo "current_version=${convco_current_version}" >> $GITHUB_OUTPUT
-          echo "version=${convco_version}" >> $GITHUB_OUTPUT
-
-          convco changelog > CHANGELOG.md
-
-          echo "Current version: $convco_current_version"
-          echo "New Version: $convco_version"
-          echo "Changelog:"
-          cat CHANGELOG.md
-
-          git tag "${convco_version}"
-          git push --tags
-
-      - name: Release
-        uses: comnoco/create-release-action@v2.0.5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "${{steps.convco.outputs.version}}"
-          release_name: "${{steps.convco.outputs.version}}"
-          body_path: CHANGELOG.md
+          fetch-depth: 0
+
+      - name: Convco init
+        uses: convco/convco-action@v0.1.0
+
+      - name: convco version
+        run: convco version
+
+      # - name: Install convco
+      #   run: |
+      #     curl -OL https://github.com/convco/convco/releases/latest/download/convco-deb.zip
+      #     unzip convco-deb.zip
+      #     sudo dpkg -i convco*.deb
+
+      # - name: Get version info
+      #   id: convco
+      #   run: |
+      #     git fetch --tags
+      #     git pull
+
+
+      #     export convco_current_version="$(convco version --print-prefix)"
+      #     export convco_version="$(convco version --bump --print-prefix)"
+
+      #     echo "current_version=${convco_current_version}" >> $GITHUB_OUTPUT
+      #     echo "version=${convco_version}" >> $GITHUB_OUTPUT
+
+      #     convco changelog > CHANGELOG.md
+
+      #     echo "Current version: $convco_current_version"
+      #     echo "New Version: $convco_version"
+      #     echo "Changelog:"
+      #     cat CHANGELOG.md
+
+      #     git tag "${convco_version}"
+      #     git push --tags
+
+      # - name: Release
+      #   uses: comnoco/create-release-action@v2.0.5
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: "${{steps.convco.outputs.version}}"
+      #     release_name: "${{steps.convco.outputs.version}}"
+      #     body_path: CHANGELOG.md
