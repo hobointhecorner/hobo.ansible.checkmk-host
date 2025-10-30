@@ -10,6 +10,7 @@ checkmk_container_additional_volumes: []
 checkmk_container_compose_networks: {}
 checkmk_container_networks:
   default: {}
+checkmk_container_additional_ports: []
 checkmk_container_additional_env_vars: {}
 checkmk_container_compose_overrides: {}
 checkmk_container_compose_override_list_behavior: replace

@@ -4,6 +4,12 @@
     checkmk_app_config_dir: "{{ checkmk_service_config_dir }}/checkmk"
     checkmk_service_user: checkmk
     checkmk_service_group: checkmk
+    checkmk_container_base_ports:
+      - "{{ checkmk_host_port_web }}:5000"
+      - "{{ checkmk_host_port_agent }}:8000"
+      - "{{ checkmk_host_port_livestatus }}:6557"
+    checkmk_container_base_volumes:
+      - "{{ checkmk_service_config_dir }}/checkmk:/omd/sites'"
     checkmk_container_base_env:
       TZ: "{{ checkmk_timezone }}"
       CMK_SITE_ID: "{{ checkmk_site_id }}"
@@ -29,14 +35,11 @@
             {{- container_env_list.append(item.key + '=' + item.value) -}}
             {%- endfor -%}
             {{ container_env_list | sort }}
-          volumes: "{{ ([(checkmk_app_config_dir + ':/omd/sites')] + checkmk_container_additional_volumes }}"
+          volumes: "{{ checkmk_container_base_volumes + checkmk_container_additional_volumes }}"
           networks: "{{ checkmk_container_networks }}"
+          ports: "{{ checkmk_container_base_ports + checkmk_container_additional_ports }}"
           tmpfs:
             - /opt/omd/sites/cmk/tmp:uid=1000,gid=1000
-          ports:
-            - "{{ checkmk_host_port_web }}:5000"
-            - "{{ checkmk_host_port_agent }}:8000"
-            - "{{ checkmk_host_port_livestatus }}:6557"
           restart: always
       volumes: "{{ checkmk_container_compose_volumes }}"
       networks: "{{ checkmk_container_compose_networks }}"
@@ -45,3 +48,8 @@
   ansible.builtin.set_fact:
     checkmk_host_compose_config: >-
       {{ checkmk_host_compose_default_config | ansible.builtin.combine(checkmk_container_compose_overrides, recursive=true, list_merge=checkmk_container_compose_override_list_behavior) }}
+
+- debug:
+    var: checkmk_host_compose_config
+
+- fail:
