@@ -12,13 +12,16 @@ jobs:
         uses: convco/convco-action@latest
         with:
           command: check
+          convco_version: latest
 
       - id: convco_version
         uses: convco/convco-action@latest
         with:
           command: version
+          convco_version: latest
 
       - id: convco_changelog
         uses: convco/convco-action@latest
         with:
           command: changelog
+          convco_version: latest
