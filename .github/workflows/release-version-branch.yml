@@ -37,6 +37,7 @@ jobs:
           git fetch --tags
           git pull
 
+
           export convco_current_version="$(convco version --print-prefix)"
           export convco_version="$(convco version --bump --print-prefix)"
 
