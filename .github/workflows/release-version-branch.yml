@@ -2,23 +2,45 @@ name: Make release
 on:
   push:
    branches:
-    - main
+    - v*
+env:
+  upstream_branch: v1
 jobs:
-  get-version:
-    name: Get version
+  convco:
+    name: Get version info
     runs-on: ubuntu-latest
+    container:
+      image: convo/convco
+    outputs:
+      version: ${{ steps.convco.outputs.convco_version }}
+      changelog: ${{ steps.convco.outputs.convco_changelog }}
     steps:
-      - id: convco_check
-        uses: convco/convco-action@v0.2.0
-        with:
-          command: check
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - id: convco
+        run: |
+          export convco_version="$(convco version)"
+          export convco_changelog="$(convco changelog)"
+          echo "convco_version=$(convco version)" >> "$GITHUB_OUTPUT"
+          echo "convco_changelog=$(convco changelog)" >> "$GITHUB_OUTPUT"
+          echo "Version: $convco_version"
+          echo: "Changelog: $convco_changelog"
 
-      - id: convco_version
-        uses: convco/convco-action@v0.2.0
+  make-release:
+    name: Make release
+    runs-on: ubuntu-latest
+    needs: convco
+    steps:
+      - name: Create tag
+        uses: laputansoft/github-tag-action@v4.6
         with:
-          command: version
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ needs.convco.outputs.version }}
+          release_branches: ${{ env.upstream_branch }}
 
-      - id: convco_changelog
-        uses: convco/convco-action@v0.2.0
+      - name: Release
+        uses: comnoco/create-release-action@v2.0.5
         with:
-          command: changelog
+          tag_name: ${{needs.convco.outputs.version}}
+          release_name: ${{needs.convco.outputs.version}}
+          body: ${{needs.convco.outputs.changelog}}
