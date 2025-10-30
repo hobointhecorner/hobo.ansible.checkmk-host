@@ -57,6 +57,7 @@ jobs:
     name: Make release
     runs-on: ubuntu-latest
     needs: convco
+    if: ${{ needs.convco.outputs.make_release == 'true' }}
     steps:
       - name: debug
         env:
