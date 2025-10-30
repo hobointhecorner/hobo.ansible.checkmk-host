@@ -59,6 +59,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{steps.convco.outputs.version}}
-          release_name: v${{steps.convco.outputs.version}}
+          tag_name: "${{steps.convco.outputs.version}}"
+          release_name: "${{steps.convco.outputs.version}}"
           body_path: CHANGELOG.md
