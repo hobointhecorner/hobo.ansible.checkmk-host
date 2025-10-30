@@ -26,7 +26,10 @@ jobs:
       version: ${{ steps.convco.outputs.convco_version }}
       changelog: ${{ steps.convco.outputs.convco_changelog }}
     steps:
-      - id: convco
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run convco
         run: |
           curl -OL https://github.com/convco/convco/releases/latest/download/convco-deb.zip
           unzip convco-deb.zip
