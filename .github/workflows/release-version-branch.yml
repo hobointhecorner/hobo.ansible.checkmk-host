@@ -1,0 +1,24 @@
+name: Make release
+on:
+  push:
+   branches:
+    - main
+jobs:
+  get-version:
+    name: Get version
+    runs-on: ubuntu-latest
+    steps:
+      - id: convco_check
+        uses: convco/convco-action
+        with:
+          command: check
+
+      - id: convco_version
+        uses: convco/convco-action
+        with:
+          command: version
+
+      - id: convco_changelog
+        uses: convco/convco-action
+        with:
+          command: changelog
