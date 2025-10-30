@@ -48,10 +48,10 @@ jobs:
           echo "New Version: $new_version"
           echo "Make release: $make_release"
 
-          echo "current_version='${current_version}'" >> $GITHUB_OUTPUT
-          echo "new_version='${new_version}'" >> $GITHUB_OUTPUT
-          echo "changelog_path='${changelog_path}'" >> $GITHUB_OUTPUT
-          echo "make_release='$make_release'" >> $GITHUB_OUTPUT
+          echo "current_version=${current_version}" >> $GITHUB_OUTPUT
+          echo "new_version=${new_version}" >> $GITHUB_OUTPUT
+          echo "changelog_path=${changelog_path}" >> $GITHUB_OUTPUT
+          echo "make_release=${make_release}" >> $GITHUB_OUTPUT
 
       - name: pre-debug
         env:
