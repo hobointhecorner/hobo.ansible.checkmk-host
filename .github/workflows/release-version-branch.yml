@@ -34,7 +34,6 @@ jobs:
       - name: Get version info
         id: convco
         env:
-          CONVCO_PREFIX: ''
           CONVCO_INITIAL_BUMP_VERSION: '1.0.0'
         run: |
           pwd
