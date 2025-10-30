@@ -50,6 +50,6 @@
       {{ checkmk_host_compose_default_config | ansible.builtin.combine(checkmk_container_compose_overrides, recursive=true, list_merge=checkmk_container_compose_override_list_behavior) }}
 
 - debug:
-    var: checkmk_host_compose_config
+    msg: "{{ checkmk_host_compose_config | to_yaml(indent=2, sort_keys=false) }}"
 
 - fail:
