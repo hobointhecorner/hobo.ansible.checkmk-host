@@ -37,6 +37,9 @@ jobs:
           CONVCO_PREFIX: ''
           CONVCO_INITIAL_BUMP_VERSION: '1.0.0'
         run: |
+          pwd
+          ls -lah
+
           export convco_current_version="$(convco version)"
           export convco_version="$(convco version --bump)"
 
