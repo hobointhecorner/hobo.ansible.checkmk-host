@@ -44,15 +44,48 @@ argument_specs:
         default: checkmk-host
         description: TODO
 
-      checkmk_container_custom_env_vars:
+      checkmk_container_compose_volumes_config:
         type: dict
         default: {}
         description: TODO
 
-      checkmk_container_network_config:
-        type: dict
-        default: { 'default': {} }
+      checkmk_container_additional_volumes:
+        type: list
+        default: []
         description: TODO
+
+      checkmk_container_compose_networks_config:
+        type: dict
+        default: {}
+        description: TODO
+
+      checkmk_container_networks:
+        type: dict
+        default:
+          default: {}
+        description: TODO
+
+      checkmk_container_additional_env_vars:
+        type: dict
+        default: {}
+        description: TODO
+
+      checkmk_container_compose_overrides:
+        type: dict
+        default: {}
+        description: TODO
+
+      checkmk_container_compose_override_list_behavior:
+        type: str
+        default: replace
+        description: TODO
+        choices:
+          - append
+          - append_rp
+          - keep
+          - prepend
+          - prepend_rp
+          - replace
 
       checkmk_host_port_web:
         type: str
