@@ -67,7 +67,7 @@ jobs:
           echo "Make release: $make_release"
 
       - name: debug
-        if: ${{ steps.output-info.outputs.make_release }}
+        if: ${{ steps.output-info.outputs.make_release == 'true' }}
         env:
           current_version: ${{ steps.output-info.outputs.current_version }}
           new_version: ${{ steps.output-info.outputs.new_version }}
