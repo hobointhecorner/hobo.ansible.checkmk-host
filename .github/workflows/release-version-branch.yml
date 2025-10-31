@@ -36,19 +36,20 @@ jobs:
         id: convco
         env:
           CONVCO_MAX_VERSIONS: 1
+          CONVCO_UNRELEASED: Changes
         run: |
           export current_version="$(convco version --print-prefix)"
           export new_version="$(convco version --bump --print-prefix)"
           export changelog="$(convco changelog)"
           [ "$current_version" != "$new_version" ] && export make_release='true' || export make_release='false'
 
-          convco changelog > $changelog_path
+          convco changelog --output $changelog_path
 
           echo "Current version: $current_version"
           echo "New Version: $new_version"
           echo "Make release: $make_release"
 
-          echo -e "\nChangelog:\n$changelog"
+          echo -e "\nChangelog:\n$(cat $changelog_path)"
 
           echo "current_version=${current_version}" >> $GITHUB_OUTPUT
           echo "new_version=${new_version}" >> $GITHUB_OUTPUT
