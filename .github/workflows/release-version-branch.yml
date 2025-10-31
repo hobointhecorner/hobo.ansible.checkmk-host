@@ -18,16 +18,11 @@ jobs:
           reset_branch: ${{ env.upstream_branch }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  convco:
+  make-release:
     name: Get version info
     runs-on: ubuntu-latest
     env:
       changelog_path: CHANGELOG.md
-    outputs:
-      current_version: ${{ steps.output-info.outputs.current_version }}
-      new_version: ${{ steps.output-info.outputs.new_version }}
-      changelog_path: ${{ steps.output-info.outputs.changelog_path }}
-      make_release: ${{ steps.output-info.outputs.make_release }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,8 +32,8 @@ jobs:
       - name: Convco init
         uses: convco/convco-action@v0.2.0
 
-      - name: Output version info
-        id: output-info
+      - name: Get version info
+        id: convco
         run: |
           export current_version="$(convco version --print-prefix)"
           export new_version="$(convco version --bump --print-prefix)"
@@ -53,78 +48,25 @@ jobs:
           echo "changelog_path=${changelog_path}" >> $GITHUB_OUTPUT
           echo "make_release=${make_release}" >> $GITHUB_OUTPUT
 
-      - name: pre-debug
-        env:
-          current_version: ${{ steps.output-info.outputs.current_version }}
-          new_version: ${{ steps.output-info.outputs.new_version }}
-          make_release: ${{ steps.output-info.outputs.make_release }}
-          changelog_path: ${{ steps.output-info.outputs.changelog_path }}
-        run: |
-          echo "Current version: $current_version"
-          echo "New Version: $new_version"
-          echo "Changelog: $changelog_path"
-          echo "Make release: $make_release"
-
       - name: debug
-        if: ${{ steps.output-info.outputs.make_release == 'true' }}
+        if: ${{ steps.convco.outputs.make_release == 'true' }}
         env:
-          current_version: ${{ steps.output-info.outputs.current_version }}
-          new_version: ${{ steps.output-info.outputs.new_version }}
-          make_release: ${{ steps.output-info.outputs.make_release }}
-          changelog_path: ${{ steps.output-info.outputs.changelog_path }}
+          current_version: ${{ steps.convco.outputs.current_version }}
+          new_version: ${{ steps.convco.outputs.new_version }}
+          make_release: ${{ steps.convco.outputs.make_release }}
+          changelog_path: ${{ steps.convco.outputs.changelog_path }}
         run: |
           echo "Current version: $current_version"
           echo "New Version: $new_version"
           echo "Changelog: $changelog_path"
           echo "Make release: $make_release"
 
-
-  make-release:
-    name: Make release
-    runs-on: ubuntu-latest
-    needs: convco
-    if: ${{ needs.convco.outputs.make_release == 'true' }}
-    steps:
-      - name: debug
+      - name: Release
+        uses: comnoco/create-release-action@v2.0.5
+        if: ${{ steps.convco.outputs.make_release == 'true' }}
         env:
-          current_version: ${{ needs.convco.outputs.current_version }}
-          new_version: ${{ needs.convco.outputs.new_version }}
-          make_release: ${{ needs.convco.outputs.make_release }}
-          changelog_path: ${{ needs.convco.outputs.changelog_path }}
-        run: |
-          echo "Current version: $current_version"
-          echo "New Version: $new_version"
-          echo "Changelog: $changelog_path"
-          echo "Make release: $make_release"
-
-  #     - name: Get version info
-  #       id: convco
-  #       run: |
-  #         git fetch --tags
-  #         git pull
-
-
-  #         export convco_current_version="$(convco version --print-prefix)"
-  #         export convco_version="$(convco version --bump --print-prefix)"
-
-  #         echo "current_version=${convco_current_version}" >> $GITHUB_OUTPUT
-  #         echo "version=${convco_version}" >> $GITHUB_OUTPUT
-
-  #         convco changelog > CHANGELOG.md
-
-  #         echo "Current version: $convco_current_version"
-  #         echo "New Version: $convco_version"
-  #         echo "Changelog:"
-  #         cat CHANGELOG.md
-
-  #         git tag "${convco_version}"
-  #         git push --tags
-
-  #     - name: Release
-  #       uses: comnoco/create-release-action@v2.0.5
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         tag_name: "${{steps.convco.outputs.version}}"
-  #         release_name: "${{steps.convco.outputs.version}}"
-  #         body_path: CHANGELOG.md
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{steps.convco.outputs.new_version}}
+          release_name: ${{steps.convco.outputs.new_version}}
+          body_path: ${{steps.convco.outputs.changelog_path}}
