@@ -39,6 +39,8 @@ jobs:
           export new_version="$(convco version --bump --print-prefix)"
           [ "$current_version" != "$new_version" ] && export make_release='true' || export make_release='false'
 
+          convco changelog > $changelog_path
+
           echo "Current version: $current_version"
           echo "New Version: $new_version"
           echo "Make release: $make_release"
