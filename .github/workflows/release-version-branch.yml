@@ -34,6 +34,8 @@ jobs:
 
       - name: Get version info
         id: convco
+        env:
+          CONVCO_MAX_VERSIONS: 1
         run: |
           export current_version="$(convco version --print-prefix)"
           export new_version="$(convco version --bump --print-prefix)"
