@@ -24,8 +24,6 @@
     mode: "640"
   notify: Reload checkmk service
 
-- fail:
-
 - name: Template systemd service file
   become: true
   ansible.builtin.template:
