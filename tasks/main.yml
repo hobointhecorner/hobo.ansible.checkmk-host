@@ -1,6 +1,9 @@
 ---
 - name: Configure playbook
-  ansible.builtin.include_tasks: tasks/playbook-facts.yml
+  ansible.builtin.include_tasks:
+    file: tasks/playbook-facts.yml
+    apply:
+      tags: [checkmk-host]
 
 - name: Ensure config directories
   become: true
@@ -13,6 +16,7 @@
   loop:
     - "{{ checkmk_service_config_dir }}"
     - "{{ checkmk_app_config_dir }}"
+  tags: [checkmk-host]
 
 - name: Template docker compose file
   become: true
@@ -23,6 +27,7 @@
     group: "{{ checkmk_service_group }}"
     mode: "640"
   notify: Reload checkmk service
+  tags: [checkmk-host]
 
 - name: Template systemd service file
   become: true
@@ -33,6 +38,7 @@
     group: root
     mode: "640"
   notify: Reload checkmk service
+  tags: [checkmk-host]
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
@@ -41,3 +47,4 @@
   when: checkmk_password_set | bool
   ansible.builtin.fail:
     msg: Make sure to update your password from the management console then run this playbook again, omitting checkmk_password_set=true.
+  tags: [checkmk-host]
