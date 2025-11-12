@@ -1,9 +1,5 @@
 ---
 roles:
-  - src: git+git@github.com:hobointhecorner/Hobo.Ansible.Docker.git
-    version: v2
-    name: hobo.docker
-
   - src: git+git@github.com:hobointhecorner/hobo.ansible.service_user.git
     version: v1
     name: hobo.service_user
